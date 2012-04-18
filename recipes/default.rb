@@ -17,7 +17,9 @@ createlang plpgsql #{node['sasi']['db']}
 psql -d #{node['sasi']['db']} -f #{postgis_sql_dir}/postgis.sql
 psql -d #{node['sasi']['db']} -f #{postgis_sql_dir}/spatial_ref_sys.sql
 psql -c "CREATE USER #{node['sasi']['dbuser']} WITH PASSWORD '#{node['sasi']['dbpass']}';"
-psql -c "GRANT ALL PRIVILEGES ON DATABASE #{node['sasi']['db']} to #{node['sasi']['dbuser']}"
+psql #{node['sasi']['db']} -c "GRANT ALL ON DATABASE #{node['sasi']['db']} to #{node['sasi']['dbuser']}"
+psql #{node['sasi']['db']} -c "GRANT ALL ON spatial_ref_sys to #{node['sasi']['dbuser']}"
+psql #{node['sasi']['db']} -c "GRANT ALL ON geometry_columns to #{node['sasi']['dbuser']}"
 END
 	not_if "sudo -u postgres psql -t -c \"select 1 from pg_database where datname='#{node['sasi']['db']}'\"|grep -q 1"
 end
