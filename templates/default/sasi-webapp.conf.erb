@@ -1,0 +1,36 @@
+<VirtualHost *:80>
+	ServerName <%= @params[:server_name] %>
+
+	LogLevel info
+	ErrorLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
+	CustomLog <%= node[:apache][:log_dir] %>/<%= @params[:name] %>-access.log combined
+
+	<IfModule mod_deflate.c>
+		SetOutputFilter DEFLATE
+		SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+	</IfModule>
+
+
+	DocumentRoot <%= @params[:docroot] %>
+	<Directory <%= @params[:docroot] %>>
+		AllowOverride all
+		Order allow,deny
+		Allow from all
+	</Directory>
+
+	WSGIDaemonProcess   sasi display-name=%{GROUP}
+    WSGIProcessGroup    sasi
+    WSGIScriptReloading On
+
+	<Directory "<%= node['sasi']['webdir'] %>">
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+	WSGIScriptAlias /basemap <%= @params['sasi_webdir']%>/baselayers/baselayers.wsgi
+    <Directory "<%= node['sasi']['webdir'] %>/baselayers">
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+</VirtualHost>

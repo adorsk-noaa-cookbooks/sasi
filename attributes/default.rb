@@ -6,3 +6,8 @@ default["sasi"]["virtaulenv"] = "/data/sasi/sasi_env"
 
 default["sasi"]["user"] = "sasi"
 default["sasi"]["group"] = "sasi"
+
+default["sasi"]["server_name"] = "sasi"
+default["sasi"]["server_aliases"] = []
+default["sasi"]["webdir"] = "/data/sasi/sasi_web"
+default["sasi"]["docroot"] = "/data/sasi/htdocs"
