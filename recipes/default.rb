@@ -12,6 +12,6 @@ createlang plpgsql #{node['sasi']['db']}
 psql -d #{node['sasi']['db']} -f #{postgis_sql_dir}/postgis.sql
 psql -d #{node['sasi']['db']} -f #{postgis_sql_dir}/spatial_ref_sys.sql
 END
-	not_if "sudo -u postgres psql -t -c \"select 1 from pg_database where datname='#{node['sasi']['db']}'\"|grep -v 1"
+	not_if "sudo -u postgres psql -t -c \"select 1 from pg_database where datname='#{node['sasi']['db']}'\"|grep -q 1"
 end
 
